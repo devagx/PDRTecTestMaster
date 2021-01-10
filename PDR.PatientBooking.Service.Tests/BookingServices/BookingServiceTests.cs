@@ -158,6 +158,36 @@ namespace PDR.PatientBooking.Service.Tests.BookingServices
             Assert.AreEqual(1, 1);
         }
 
+        [Test]
+        public void GetAllBookings_ReturnsMappedBookingList()
+        {
+            //arrange
+            var booking = _fixture.Create<Order>();
+            _context.Order.Add(booking);
+            _context.SaveChanges();
+
+            var expected = new GetAllBookingsResponse
+            {
+                Bookings = new List<GetAllBookingsResponse.Booking>
+                {
+                    new GetAllBookingsResponse.Booking
+                    {
+                        Id = booking.Id,
+                        StartTime = booking.StartTime,
+                        EndTime = booking.EndTime,
+                        PatientId = booking.PatientId,
+                        DoctorId = booking.DoctorId
+                    }
+                }
+            };
+
+            //act
+            var res = _bookingService.GetAllBookings();
+
+            //assert
+            res.Should().BeEquivalentTo(expected);
+        }
+
 
         [TearDown]
         public void TearDown()

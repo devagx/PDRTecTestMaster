@@ -57,6 +57,22 @@ namespace PDR.PatientBookingApi.Controllers
             }
         }
 
+        /*Have added below methods for testing purposes only. If publishing application 
+         * for real to DEV, QA or PROD then this code would be completley removed
+        */
+        [HttpGet("GetAllBookings")]
+        public IActionResult GetAllBookings()
+        {
+            try
+            {
+                return Ok(_bookingService.GetAllBookings());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+        }
+
         private static MyOrderResult UpdateLatestBooking(List<Order> bookings2, int i)
         {
             MyOrderResult latestBooking;

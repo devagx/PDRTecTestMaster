@@ -10,6 +10,8 @@ namespace PDR.PatientBooking.Service.BookingServices
 
         GetPatientNextAppointmentResponse GetPatientNextAppointment(long identificationNumber);
 
+        GetAllBookingsResponse GetAllBookings();
+
 
     }
 }

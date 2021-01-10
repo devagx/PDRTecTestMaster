@@ -69,5 +69,27 @@ namespace PDR.PatientBooking.Service.BookingServices
             };
         }
 
+        public GetAllBookingsResponse GetAllBookings()
+        {
+
+            var bookings = _context
+                .Order
+                .Select(x => new GetAllBookingsResponse.Booking
+                {
+                    Id = x.Id,
+                    DoctorId = x.DoctorId,
+                    PatientId = x.PatientId,
+                    StartTime = x.StartTime,
+                    EndTime = x.EndTime
+                }).OrderBy(x => x.StartTime)
+                .AsNoTracking()
+                .ToList();
+
+            return new GetAllBookingsResponse
+            {
+                Bookings = bookings
+            };
+        }
+
     }
 }
