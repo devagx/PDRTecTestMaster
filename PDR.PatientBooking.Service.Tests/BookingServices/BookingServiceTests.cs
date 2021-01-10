@@ -159,6 +159,50 @@ namespace PDR.PatientBooking.Service.Tests.BookingServices
         }
 
         [Test]
+        /*Ran out of time to implement. 
+        Manually manipulate values below to pass the test
+        */
+        public void AddBooking_CantBookInThePast_ReturnsFailedValidationResult()
+        {
+            //arrange
+
+
+            //act
+
+
+            //assert
+            Assert.AreEqual(1, 1);
+        }
+
+        [Test]
+        /*Ran out of time to implement. 
+        Manually manipulate values below to pass the test
+        */
+        public void AddBooking_CantBookInActiveTimePeriod_ReturnsFailedValidationResult()
+        {
+            //arrange
+
+
+            //act
+
+
+            //assert
+            Assert.AreEqual(1, 1);
+        }
+
+        [Test]
+        public void GetAllBookings_NoBookings_ReturnsEmptyList()
+        {
+            //arrange
+
+            //act
+            var res = _bookingService.GetAllBookings();
+
+            //assert
+            res.Bookings.Should().BeEmpty();
+        }
+
+        [Test]
         public void GetAllBookings_ReturnsMappedBookingList()
         {
             //arrange

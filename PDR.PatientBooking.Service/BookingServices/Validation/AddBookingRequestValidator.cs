@@ -3,7 +3,6 @@ using PDR.PatientBooking.Service.BookingServices.Requests;
 using PDR.PatientBooking.Service.Validation;
 using System.Collections.Generic;
 using System.Linq;
-//devag
 using System;
 
 namespace PDR.PatientBooking.Service.BookingServices.Validation
@@ -23,7 +22,10 @@ namespace PDR.PatientBooking.Service.BookingServices.Validation
 
             if (MissingRequiredFields(request, ref result))
                 return result;
-          
+
+            if (InvalidBooking(request, ref result))
+                return result;
+
             return result;
         }
 
@@ -42,6 +44,53 @@ namespace PDR.PatientBooking.Service.BookingServices.Validation
             }
 
             return false;
+        }
+
+        public bool InvalidBooking(AddBookingRequest request, ref PdrValidationResult result)
+        {
+            try
+            {
+                //You can not make a booking in the past
+                if (request.StartTime <= DateTime.Now || request.EndTime <= DateTime.Now)
+                {
+                    result.PassedValidation = false;
+                    result.Errors.Add("You can not make bookings in the past");
+                    return true;
+                }
+
+                //Get all bookings
+                var bookings = _context.Order.OrderBy(x => x.StartTime).ToList();
+
+                if (bookings.Where(x => x.DoctorId == request.DoctorId).Count() == 0)
+                {
+                    //Doctor does not have any bookings, so OK to create booking
+                    return false;
+                }
+                else
+                {
+                    //Get all bookings against given doctor
+                    var bookings2 = bookings.Where(
+                        x => x.DoctorId == request.DoctorId &&
+                        (
+                            (request.StartTime >= x.StartTime && request.StartTime <= x.EndTime) ||
+                            (request.EndTime >= x.StartTime && request.EndTime <= x.EndTime)
+                            )
+                        );
+
+                    if (bookings2.Count() > 0)
+                    {
+                        //Doctor is busy during the selected period
+                        result.PassedValidation = false;
+                        result.Errors.Add("Doctor is busy in selected time period");
+                        return true;
+                    }
+                }
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
 
