@@ -8,6 +8,8 @@ namespace PDR.PatientBooking.Service.BookingServices
     {
         void AddBooking(AddBookingRequest request);
 
+        bool CancelBooking(CancelBookingRequest request);
+
         GetPatientNextAppointmentResponse GetPatientNextAppointment(long identificationNumber);
 
         GetAllBookingsResponse GetAllBookings();

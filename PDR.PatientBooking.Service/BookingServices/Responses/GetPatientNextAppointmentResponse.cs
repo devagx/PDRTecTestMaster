@@ -20,7 +20,7 @@ namespace PDR.PatientBooking.Service.BookingServices.Responses
             public DateTime StartTime { get; set; }
             public DateTime EndTime { get; set; }
 
-
+            public BookingStatus BookingStatus { get; set; }
 
 
         }

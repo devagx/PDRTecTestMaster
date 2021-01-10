@@ -11,6 +11,8 @@ namespace PDR.PatientBooking.Service.BookingServices.Requests
         public DateTime EndTime { get; set; }
         public virtual long PatientId { get; set; }
         public virtual long DoctorId { get; set; }
-  
+
+        public BookingStatus BookingStatus { get; set; }
+
     }
 }

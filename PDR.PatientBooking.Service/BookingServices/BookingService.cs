@@ -22,6 +22,19 @@ namespace PDR.PatientBooking.Service.BookingServices
             _validator = validator;
         }
 
+        public bool CancelBooking(CancelBookingRequest request)
+        {
+            var booking = _context.Order.SingleOrDefault(b => b.Id == request.Id);
+
+            if (booking != null)
+            {
+                booking.BookingStatus = (int)BookingStatus.Cancelled;
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
         public void AddBooking(AddBookingRequest request)
         {
             var validationResult = _validator.ValidateRequest(request);
@@ -38,7 +51,8 @@ namespace PDR.PatientBooking.Service.BookingServices
                 StartTime = request.StartTime,
                 EndTime = request.EndTime,
                 PatientId = request.PatientId,
-                DoctorId = request.DoctorId
+                DoctorId = request.DoctorId,
+                BookingStatus = (int)request.BookingStatus
             });
 
 
@@ -58,8 +72,9 @@ namespace PDR.PatientBooking.Service.BookingServices
                     DoctorId = x.DoctorId,
                     StartTime = x.StartTime,
                     PatientId = x.PatientId,
+                    BookingStatus = (BookingStatus)x.BookingStatus,
                     EndTime = x.EndTime
-                }).Where(x => x.PatientId == identificationNumber && x.StartTime > DateTime.Now).OrderBy(x => x.StartTime).Take(1)
+                }).Where(x => x.PatientId == identificationNumber && x.StartTime > DateTime.Now && x.BookingStatus == BookingStatus.Available).OrderBy(x => x.StartTime).Take(1)
                 .AsNoTracking()
                 .ToList();
 
@@ -80,6 +95,7 @@ namespace PDR.PatientBooking.Service.BookingServices
                     DoctorId = x.DoctorId,
                     PatientId = x.PatientId,
                     StartTime = x.StartTime,
+                    BookingStatus = (BookingStatus)x.BookingStatus,
                     EndTime = x.EndTime
                 }).OrderBy(x => x.StartTime)
                 .AsNoTracking()

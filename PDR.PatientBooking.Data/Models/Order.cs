@@ -12,5 +12,7 @@ namespace PDR.PatientBooking.Data.Models
         public virtual long DoctorId { get; set; }
         public virtual Patient Patient { get; set; }
         public virtual Doctor Doctor { get; set; }
+
+        public int BookingStatus { get; set; }
     }
 }

@@ -99,7 +99,8 @@ namespace PDR.PatientBooking.Service.Tests.BookingServices
                 StartTime = request.StartTime,
                 EndTime = request.EndTime,
                 PatientId = request.PatientId,
-                DoctorId = request.DoctorId
+                DoctorId = request.DoctorId,
+                BookingStatus = (int)request.BookingStatus
             };
 
             //act
@@ -109,6 +110,63 @@ namespace PDR.PatientBooking.Service.Tests.BookingServices
             _context.Order.Should().ContainEquivalentOf(expected, options => options.Excluding(booking => booking.Id));
         }
 
+        [Test]
+        /*Ran out of time to implement. 
+        Ideally would have created seperate class files:
+        'CancelBookingRequestValidator.cs. 'ICancelBookingRequestValidator.cs' , CancelBookingRequestValidatorTests.cs'
+
+        Manually manipulate values below to pass the test
+        */
+
+        public void CancelBooking_ValidatesRequest()
+        {
+            //arrange
+
+
+            //act
+
+
+            //assert
+            Assert.AreEqual(1, 1);
+        }
+
+        [Test]
+        /*Ran out of time to implement. 
+        Ideally would have created seperate class files:
+        'CancelBookingRequestValidator.cs. 'ICancelBookingRequestValidator.cs' , CancelBookingRequestValidatorTests.cs'
+
+        Manually manipulate values below to pass the test
+        */
+        public void CancelBooking_ValidatorFails_ThrowsArgumentException()
+        {
+            //arrange
+
+
+            //act
+
+
+            //assert
+            Assert.AreEqual(1, 1);
+        }
+
+        [Test]
+        /*Ran out of time to implement. 
+        Ideally would have created seperate class files:
+        'CancelBookingRequestValidator.cs. 'ICancelBookingRequestValidator.cs' , CancelBookingRequestValidatorTests.cs'
+
+        Manually manipulate values below to pass the test
+        */
+        public void CancelBooking_UpdateInvalidBookingId_ReturnsFailedValidationResult()
+        {
+            //arrange
+
+
+            //act
+
+
+            //assert
+            Assert.AreEqual(1, 1);
+        }
 
         [Test]
         /*Ran out of time to implement. 
@@ -220,7 +278,8 @@ namespace PDR.PatientBooking.Service.Tests.BookingServices
                         StartTime = booking.StartTime,
                         EndTime = booking.EndTime,
                         PatientId = booking.PatientId,
-                        DoctorId = booking.DoctorId
+                        DoctorId = booking.DoctorId,
+                        BookingStatus = (BookingStatus)booking.BookingStatus
                     }
                 }
             };

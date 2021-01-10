@@ -25,6 +25,25 @@ namespace PDR.PatientBookingApi.Controllers
 
         }
 
+        [HttpPost("CancelBooking")]
+        public IActionResult CancelBooking(CancelBookingRequest request)
+        {
+            try
+            {
+                bool result;
+                result = _bookingService.CancelBooking(request);
+                return Ok();
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+        }
+
 
         [HttpPost("AddBooking")]
         public IActionResult AddBooking(AddBookingRequest request)
