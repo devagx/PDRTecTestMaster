@@ -3,6 +3,7 @@ using PDR.PatientBooking.Service.PatientServices.Requests;
 using PDR.PatientBooking.Service.Validation;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 
 namespace PDR.PatientBooking.Service.PatientServices.Validation
 {
@@ -19,13 +20,13 @@ namespace PDR.PatientBooking.Service.PatientServices.Validation
         {
             var result = new PdrValidationResult(true);
 
-            if (MissingRequiredFields(request, ref result))
-                return result;
-
             if (PatientAlreadyInDb(request, ref result))
                 return result;
 
             if (ClinicNotFound(request, ref result))
+                return result;
+
+            if (MissingRequiredFields(request, ref result))
                 return result;
 
             return result;
@@ -44,6 +45,9 @@ namespace PDR.PatientBooking.Service.PatientServices.Validation
             if (string.IsNullOrEmpty(request.Email))
                 errors.Add("Email must be populated");
 
+            if (!IsValidEmail(request.Email))
+                errors.Add("Email must be a valid email address");
+
             if (errors.Any())
             {
                 result.PassedValidation = false;
@@ -52,6 +56,19 @@ namespace PDR.PatientBooking.Service.PatientServices.Validation
             }
 
             return false;
+        }
+
+        private bool IsValidEmail(string email)
+        {
+            try
+            {
+                MailAddress mail = new MailAddress(email);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         private bool PatientAlreadyInDb(AddPatientRequest request, ref PdrValidationResult result)
